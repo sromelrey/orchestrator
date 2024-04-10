@@ -53,7 +53,6 @@ export default function Tabs({
 
   return (
     <div className='w-full flex flex-col items-center'>
-      {/* <div className="relative mx-auto"> */}
       <MUITabs
         value={value}
         onChange={handleChange}
@@ -68,7 +67,6 @@ export default function Tabs({
           />
         ))}
       </MUITabs>
-      {/* </div> */}
       {tabsComponent.map((panel, index) => (
         <CustomTabPanel value={value} key={index} index={index}>
           {panel}

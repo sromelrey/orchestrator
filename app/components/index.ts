@@ -6,6 +6,7 @@ import { Button, SubmitButton } from './buttons'
 // import Table from "./table";
 // import { Card } from "./cards";
 import { TableRowSkeleton } from './skeletons'
-import Tabs from './tabs'
+import DatePicker from "./date-picker";
+import Tabs from "./tabs";
 
-export { Button, SubmitButton, TextBox, TableRowSkeleton, Tabs }
+export { Button, SubmitButton, TextBox, TableRowSkeleton, Tabs, DatePicker };

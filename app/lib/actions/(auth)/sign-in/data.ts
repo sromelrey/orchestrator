@@ -9,9 +9,11 @@ export async function getUser(email: string): Promise<User | undefined> {
   try {
     const user = await sql<User>`SELECT * FROM users WHERE email=${email}`
     const userData = user.rows[0]
-    const expires = new Date(Date.now() + 86400000) // 86400000 milliseconds = 24 hours
-    // const sessionData = await encrypt({ userData, expires })
-    // await cookies().set('session', sessionData, { expires, httpOnly: true })
+    const now = new Date();
+    const expires = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    const sessionData = await encrypt({ userData, expires });
+
+    await cookies().set("session", sessionData, { expires, httpOnly: true });
 
     return user.rows[0]
   } catch (error) {

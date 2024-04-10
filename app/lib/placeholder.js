@@ -1,45 +1,54 @@
-export const todos = [
+const todos = [
   {
-    id: '3958dc9e-712f-4377-85e9-fec4b6a6442a',
-    date: '2024-03-17',
+    user_id: "526f79ba-7d4f-4d12-a20a-f65f1fc32591",
+    date: "2024-03-17",
+    title: "Setup Authentication",
     tasks: [
       {
-        title: 'Create Login',
-        status: 'pending',
+        title: "Create Login",
+        start_time: "01:00:00",
+        end_time: "02:00:00",
         todos: [
-          { name: 'Create Login Form', status: 'done' },
-          { name: 'Integrate Authentication', status: 'done' },
+          { description: "Create Login Form", status: "done" },
+          { description: "Integrate Authentication", status: "done" },
           {
-            name: 'Modify Login UI for Mobile Responsiveness',
-            status: 'pending',
+            description: "Modify Login UI for Mobile Responsiveness",
+            status: "pending",
           },
         ],
       },
       {
-        title: 'Create SignUp',
-        status: 'ongoing',
+        title: "Create SignUp",
+        start_time: "02:00:00",
+        end_time: "03:00:00",
+        status: "ongoing",
         todos: [
-          { name: 'Create SignUp Form', status: 'pending' },
-          { name: 'Integrate SignUp with API', status: 'pending' },
+          { description: "Create SignUp Form", status: "pending" },
+          { description: "Integrate SignUp with API", status: "pending" },
           {
-            name: 'Modify SignUp UI for Mobile Responsiveness',
-            status: 'pending',
+            description: "Modify SignUp UI for Mobile Responsiveness",
+            status: "pending",
           },
         ],
       },
       {
-        title: 'Create table Component',
-        status: 'done',
+        title: "Create table Component",
+        status: "done",
+        start_time: "03:00:00",
+        end_time: "04:00:00",
         todos: [
-          { name: 'Create table Component', status: 'done' },
-          { name: 'Integrate with API', status: 'done' },
-          { name: '', status: 'done' },
+          { description: "Create table Component", status: "done" },
+          { description: "Integrate with API", status: "done" },
+          { description: "Integrate Pagination", status: "done" },
           {
-            name: 'Modify Login UI for Mobile Responsiveness',
-            status: 'pending',
+            description: "Modify Login UI for Mobile Responsiveness",
+            status: "pending",
           },
         ],
       },
     ],
   },
-]
+];
+module.exports = {
+  todos,
+};
