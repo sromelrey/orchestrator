@@ -1,13 +1,12 @@
+"use client";
 import React from "react";
 import { formatDateToLocal, transformTasks } from "@/app/lib/helpers";
 import { Todos } from "@/app/lib/actions/(dashboard)/todo/data";
-import { fetchedTasks } from "@/app/lib/actions/(dashboard)/todo/data";
 
-export default async function TableBody({ items }: { items: Todos[] }) {
-  console.log(items);
+export default function TableBody({ items }: { items: Todos[] }) {
   return (
     <tbody className='bg-white'>
-      {items.length < 0 ? (
+      {items.length > 0 ? (
         items.map((item) => (
           <tr
             key={item.id}

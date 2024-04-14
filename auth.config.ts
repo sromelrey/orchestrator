@@ -21,7 +21,7 @@ export const authConfig = {
         if (isLoggedIn) return true;
         return false;
       } else if (isLoggedIn) {
-        console.log("You are not logged in");
+        console.log("You are logged in");
         return Response.redirect(new URL("/todo", nextUrl));
       } else if (!isOnDashboard && !isLoggedIn) {
         if (

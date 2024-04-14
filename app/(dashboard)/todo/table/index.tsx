@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-async-client-component */
-"use client";
 import { Button, TableRowSkeleton } from "@/app/components";
 import Search from "@/app/components/search";
 import { Todos, fetchedTasks } from "@/app/lib/actions/(dashboard)/todo/data";
