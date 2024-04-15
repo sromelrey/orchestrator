@@ -7,7 +7,6 @@ import { redirect } from "next/navigation";
 import { getSession } from "@/app/lib/utils";
 
 const TaskSchema = z.object({
-  id: z.string(),
   date: z.string({
     invalid_type_error: "Please select a date.",
   }),
@@ -41,15 +40,28 @@ export async function createTask(prevState: State, formData: FormData) {
   }
   const { date, title, description } = validatedFields.data;
 
-  const taskDate = new Date(date).toISOString().split("T")[0];
+  const selectedDate = await sql`SELECT * FROM tasks WHERE date = ${date};`;
+  console.log();
+  if (selectedDate.rows.length > 0) {
+    return {
+      errors: {
+        date: [
+          "A task with this date already exists. Please choose a different date.",
+        ],
+      },
+      message:
+        "Failed to create task. A task with the same date already exists.",
+    };
+  }
 
   try {
     await sql`
-  INSERT INTO invoices (user_id, title, description, status, date)
-  VALUES (${userId}, ${title}, ${description}, ${taskDate})
-`;
+      INSERT INTO tasks (user_id, title, description, date)
+      VALUES (${userId}, ${title}, ${description}, ${date})
+    `;
     return { message: "Account created successfully" };
   } catch (error) {
+    console.log(error);
     return {
       message: "Database Error: Failed to Create Invoice.",
     };

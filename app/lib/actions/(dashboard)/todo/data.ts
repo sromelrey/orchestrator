@@ -48,7 +48,7 @@ export async function fetchedTasks(query: string) {
     let subTaskData: Array<Subtasks>;
 
     const todosResponse =
-      await sql<Todos>`SELECT *  FROM todos WHERE user_id=${userId};`;
+      await sql<Todos>`SELECT *  FROM tasks WHERE user_id=${userId};`;
     todosData = todosResponse.rows;
 
     if (todosData.length > 0) {
