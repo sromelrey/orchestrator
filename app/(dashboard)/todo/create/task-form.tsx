@@ -8,8 +8,15 @@ import {
 } from "@/app/components";
 import { createTask } from "@/app/lib/actions/(dashboard)/todo/action";
 import { AtSymbolIcon, KeyIcon } from "@heroicons/react/24/outline";
+import { SnackBar } from "@/app/components";
 import Link from "next/link";
 import { useFormState } from "react-dom";
+
+export interface Errors {
+  errors: {
+    date?: string[];
+  };
+}
 
 export default function Form() {
   const initialState = { message: "", errors: {} };
@@ -21,6 +28,11 @@ export default function Form() {
       className='space-y-3 bg-violet-400 bg-opacity-20 
       border-violet-100 rounded-lg shadow-violet-200'
     >
+      {/* TS validation for the objects  */}
+      {Object.keys(errors.errors?.date || {})?.length > 0 &&
+        (errors?.errors?.date || []).map((error: string, index: number) => (
+          <SnackBar message={error} type='error' key={index} />
+        ))}
       <div className='flex-1 rounded-lg px-6 pb-4 pt-8'>
         <div className='flex flex-row text-center justify-center'>
           <Link
