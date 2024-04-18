@@ -14,15 +14,18 @@ const TaskSchema = z.object({
   description: z.string(),
 });
 
+
 export type State = {
   errors?: {
     id?: string[] | undefined;
+    isDuplicate?: boolean;
     date?: string[] | undefined;
     title?: string[] | undefined;
     description?: string[] | undefined;
   };
   message: string;
 };
+
 export async function createTask(prevState: State, formData: FormData) {
   const session = await getSession();
   const userId = session?.id;
@@ -41,10 +44,11 @@ export async function createTask(prevState: State, formData: FormData) {
   const { date, title, description } = validatedFields.data;
 
   const selectedDate = await sql`SELECT * FROM tasks WHERE date = ${date};`;
-  console.log();
-  if (selectedDate.rows.length > 0) {
+  const isDuplicateTaskDate = selectedDate.rows.length > 0;
+  if (isDuplicateTaskDate) {
     return {
       errors: {
+        isDuplicate: true,
         date: [
           "A task with this date already exists. Please choose a different date.",
         ],
@@ -55,17 +59,20 @@ export async function createTask(prevState: State, formData: FormData) {
   }
 
   try {
-    await sql`
+    const responseData = await sql`
       INSERT INTO tasks (user_id, title, description, date)
       VALUES (${userId}, ${title}, ${description}, ${date})
+      RETURNING id, title, description, date;
     `;
+
     return { message: "Account created successfully" };
   } catch (error) {
     console.log(error);
     return {
       message: "Database Error: Failed to Create Invoice.",
     };
+  } finally {
+    redirect("/todo/tasks/tsrtasda");
   }
   revalidatePath("/todo/create");
-  redirect("/todo/create");
 }

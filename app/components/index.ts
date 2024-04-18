@@ -10,6 +10,7 @@ import DatePicker from "./date-picker";
 import Tabs from "./tabs";
 import Textarea from "./text-area";
 import BreadCrumbs from "./breadcrumbs";
+import SnackBar from "./snackbar";
 
 export {
   Button,
@@ -20,4 +21,5 @@ export {
   Textarea,
   DatePicker,
   BreadCrumbs,
+  SnackBar,
 };

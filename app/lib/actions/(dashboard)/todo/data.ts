@@ -55,7 +55,7 @@ export async function fetchedTasks(query: string) {
       const subtaskResponse = await Promise.all(
         todosData.map(async (todo: any) => {
           const sqlResponse = await sql<Subtasks>`
-        SELECT *  FROM  subtasks WHERE todo_id=${todo.id};`;
+        SELECT *  FROM  subtasks WHERE task_id=${todo.id};`;
           todo.subtasks = sqlResponse.rows;
           todo.no_of_subtasks = sqlResponse.rows.length;
           return sqlResponse;
