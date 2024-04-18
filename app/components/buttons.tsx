@@ -22,12 +22,16 @@ export function Button({ children, className, ...rest }: ButtonProps) {
   )
 }
 
-export function SubmitButton({ children, className }: ButtonProps) {
-  const { pending } = useFormStatus()
-
+export function SubmitButton({ children, className, disabled }: ButtonProps) {
+  const { pending } = useFormStatus();
+  console.log({ pending, disabled });
   return (
-    <Button className={clsx(`mt-4 w-full`, className)} aria-disabled={pending}>
+    <Button
+      className={clsx(`mt-4 w-full`, className)}
+      aria-disabled={pending || disabled}
+      disabled={disabled}
+    >
       {children}
     </Button>
-  )
+  );
 }

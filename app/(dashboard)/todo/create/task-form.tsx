@@ -11,16 +11,18 @@ import { AtSymbolIcon, KeyIcon } from "@heroicons/react/24/outline";
 import { SnackBar } from "@/app/components";
 import Link from "next/link";
 import { useFormState } from "react-dom";
-
-export interface Errors {
-  errors: {
-    date?: string[];
-  };
-}
+import { useEffect, useState } from "react";
 
 export default function Form() {
   const initialState = { message: "", errors: {} };
   const [errors, dispatch] = useFormState(createTask, initialState);
+  const [isDuplicate, setIsDuplicate] = useState(false);
+
+  const hasErrors = Object.keys(errors.errors?.date || {})?.length > 0;
+
+  useEffect(() => {
+    hasErrors && setIsDuplicate(true);
+  }, [hasErrors]);
 
   return (
     <form
@@ -48,7 +50,9 @@ export default function Form() {
             <label className='mb-3 mt-5 block text-xs font-medium text-white'>
               Select Date
             </label>
-            <DatePicker name='taskDate' />
+            {/* TS validation for the objects  */}
+
+            <DatePicker name='taskDate' setIsDuplicate={setIsDuplicate} />
           </div>
           <div>
             <TextBox
@@ -72,7 +76,10 @@ export default function Form() {
             />
           </div>
 
-          <SubmitButton className=' text-xl font-bold justify-center bg-violet-500 hover:bg-violet-300 text-violet-100'>
+          <SubmitButton
+            disabled={isDuplicate}
+            className=' text-xl font-bold justify-center bg-violet-500 hover:bg-violet-300 text-violet-100'
+          >
             Create the task
           </SubmitButton>
         </div>
