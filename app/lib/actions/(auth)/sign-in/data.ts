@@ -13,7 +13,10 @@ export async function getUser(email: string): Promise<User | undefined> {
     const expires = new Date(now.getTime() + 24 * 60 * 60 * 1000);
     const sessionData = await encrypt({ userData, expires });
 
-    await cookies().set("session", sessionData, { expires, httpOnly: true });
+    await cookies().set("session", sessionData as string, {
+      expires,
+      httpOnly: true,
+    });
 
     return user.rows[0]
   } catch (error) {
