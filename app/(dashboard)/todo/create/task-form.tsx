@@ -18,9 +18,9 @@ export default function Form() {
   const initialState = { message: "", errors: {} };
   const [state, dispatch] = useFormState(createTask, initialState);
   const [isDuplicate, setIsDuplicate] = useState(false);
-  const [taskId, setTaskId] = useState("");
 
   const hasErrors = Object.keys(state.errors?.date || {})?.length > 0;
+
   useEffect(() => {
     hasErrors && setIsDuplicate(true);
   }, [hasErrors]);

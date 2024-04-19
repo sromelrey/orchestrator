@@ -23,7 +23,7 @@ export type State = {
     title?: string[] | undefined;
     description?: string[] | undefined;
   };
-  message: string;
+  message?: string;
 };
 
 export async function createTask(prevState: State, formData: FormData) {
@@ -66,6 +66,10 @@ export async function createTask(prevState: State, formData: FormData) {
     `;
     if (responseData.rows[0].id)
       redirectPath = `/todo/tasks/${responseData.rows[0].id}`;
+
+    return {
+      message: "Task created successfully",
+    };
   } catch (error) {
     console.log(error);
     return {
