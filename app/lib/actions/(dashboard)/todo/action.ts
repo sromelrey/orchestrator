@@ -3,8 +3,9 @@
 import { z } from "zod";
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { permanentRedirect, redirect } from "next/navigation";
 import { getSession } from "@/app/lib/utils";
+import { useRouter } from "next/navigation";
 
 const TaskSchema = z.object({
   date: z.string({
@@ -13,7 +14,6 @@ const TaskSchema = z.object({
   title: z.string(),
   description: z.string(),
 });
-
 
 export type State = {
   errors?: {
@@ -57,22 +57,22 @@ export async function createTask(prevState: State, formData: FormData) {
         "Failed to create task. A task with the same date already exists.",
     };
   }
-
+  let redirectPath: string | null = null;
   try {
     const responseData = await sql`
       INSERT INTO tasks (user_id, title, description, date)
       VALUES (${userId}, ${title}, ${description}, ${date})
       RETURNING id, title, description, date;
     `;
-
-    return { message: "Account created successfully" };
+    if (responseData.rows[0].id)
+      redirectPath = `/todo/tasks/${responseData.rows[0].id}`;
   } catch (error) {
     console.log(error);
     return {
       message: "Database Error: Failed to Create Invoice.",
     };
   } finally {
-    redirect("/todo/tasks/tsrtasda");
+    //Clear resources
+    if (!!redirectPath) redirect(redirectPath);
   }
-  revalidatePath("/todo/create");
 }

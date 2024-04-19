@@ -12,14 +12,15 @@ import { SnackBar } from "@/app/components";
 import Link from "next/link";
 import { useFormState } from "react-dom";
 import { useEffect, useState } from "react";
+import router from "next/router";
 
 export default function Form() {
   const initialState = { message: "", errors: {} };
-  const [errors, dispatch] = useFormState(createTask, initialState);
+  const [state, dispatch] = useFormState(createTask, initialState);
   const [isDuplicate, setIsDuplicate] = useState(false);
+  const [taskId, setTaskId] = useState("");
 
-  const hasErrors = Object.keys(errors.errors?.date || {})?.length > 0;
-
+  const hasErrors = Object.keys(state.errors?.date || {})?.length > 0;
   useEffect(() => {
     hasErrors && setIsDuplicate(true);
   }, [hasErrors]);
@@ -31,8 +32,8 @@ export default function Form() {
       border-violet-100 rounded-lg shadow-violet-200'
     >
       {/* TS validation for the objects  */}
-      {Object.keys(errors.errors?.date || {})?.length > 0 &&
-        (errors?.errors?.date || []).map((error: string, index: number) => (
+      {Object.keys(state.errors?.date || {})?.length > 0 &&
+        (state?.errors?.date || []).map((error: string, index: number) => (
           <SnackBar message={error} type='error' key={index} />
         ))}
       <div className='flex-1 rounded-lg px-6 pb-4 pt-8'>
