@@ -1,16 +1,23 @@
 import { QueryResultRow } from '@vercel/postgres'
+import dayjs from "dayjs";
 
-export function formatDateToLocal(dateStr: string, locale: string = 'en-US') {
-  const date = new Date(dateStr)
+export function formatDateToLocal(dateStr: string, locale: string = "en-US") {
+  const date = new Date(dateStr);
   const options: Intl.DateTimeFormatOptions = {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  }
-  const formatter = new Intl.DateTimeFormat(locale, options)
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  };
+  const formatter = new Intl.DateTimeFormat(locale, options);
 
-  return formatter.format(date)
+  return formatter.format(date);
 }
+
+export function formatTime(time: string) {
+  return dayjs(time).format("hh:mm:ss A");
+}
+
+
 
 type Todo = {
   id: string

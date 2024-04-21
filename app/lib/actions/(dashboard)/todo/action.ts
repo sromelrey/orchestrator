@@ -1,32 +1,12 @@
 "use server";
-
-import { z } from "zod";
 import { sql } from "@vercel/postgres";
-import { revalidatePath } from "next/cache";
-import { permanentRedirect, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { getSession } from "@/app/lib/utils";
-import { useRouter } from "next/navigation";
+import { SubtaskSchema, TaskSchema } from "./schemas";
+import { SubtaskState, TaskState } from "./definitions";
+import { fetchSelectedTime } from "./data";
 
-const TaskSchema = z.object({
-  date: z.string({
-    invalid_type_error: "Please select a date.",
-  }),
-  title: z.string(),
-  description: z.string(),
-});
-
-export type State = {
-  errors?: {
-    id?: string[] | undefined;
-    isDuplicate?: boolean;
-    date?: string[] | undefined;
-    title?: string[] | undefined;
-    description?: string[] | undefined;
-  };
-  message?: string;
-};
-
-export async function createTask(prevState: State, formData: FormData) {
+export async function createTask(prevState: TaskState, formData: FormData) {
   const session = await getSession();
   const userId = session?.id;
   const validatedFields = TaskSchema.safeParse({
@@ -78,5 +58,59 @@ export async function createTask(prevState: State, formData: FormData) {
   } finally {
     //Clear resources
     if (!!redirectPath) redirect(redirectPath);
+  }
+}
+
+export async function createSubtasks(prevState: SubtaskState, formData: any) {
+  const session = await getSession();
+  const userId = session?.id;
+
+  const validatedFields = SubtaskSchema.safeParse({
+    title: formData?.title,
+    startTime: formData?.startTime,
+    endTime: formData?.endTime,
+    description: formData?.description,
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Failed to Create Task.",
+    };
+  }
+  const { title, startTime, endTime, description } = validatedFields.data;
+
+  const hasOverlaps = await fetchSelectedTime(
+    startTime,
+    endTime,
+    formData.task_id
+  );
+
+  if (hasOverlaps) {
+    return {
+      errors: {
+        hasOverlaps: true,
+        time: [
+          "The entered times overlap. Please adjust your times to ensure they do not conflict.",
+        ],
+      },
+      message:
+        "Failed to create Subtask. The entered times overlap. Please adjust your times to ensure they do not conflict.",
+    };
+  }
+
+  try {
+    const responseData = await sql`INSERT INTO subtasks 
+    (task_id, title, description, start_time, end_time)
+    VALUES (${formData.task_id},${title},${description},${startTime},${endTime})
+    RETURNING id, title, description, start_time, end_time;
+   `;
+    return {
+      message: "Task created successfully",
+    };
+  } catch (error) {
+    return {
+      message: "Task created successfully",
+    };
   }
 }

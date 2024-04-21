@@ -6,6 +6,7 @@ interface TextBoxProps {
   label: string;
   minRows?: number;
   name: string;
+  onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
 }
 
 export default function Textarea({
@@ -13,6 +14,8 @@ export default function Textarea({
   label,
   minRows,
   name,
+  onChange,
+  ...rest
 }: TextBoxProps) {
   return (
     <>
@@ -23,10 +26,12 @@ export default function Textarea({
         {label}
       </label>
       <TextareaAutosize
+        {...rest}
         name={name}
         className='peer block w-full rounded-md border border-gray-200 py-[9px] px-5 text-sm outline-2 placeholder:text-gray-500'
         minRows={minRows ? minRows : 3}
         placeholder='Task Description'
+        onChange={onChange}
       />
     </>
   );
