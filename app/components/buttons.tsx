@@ -24,7 +24,7 @@ export function Button({ children, className, ...rest }: ButtonProps) {
 
 export function SubmitButton({ children, className, disabled }: ButtonProps) {
   const { pending } = useFormStatus();
-  console.log({ pending, disabled });
+
   return (
     <Button
       className={clsx(`mt-4 w-full`, className)}

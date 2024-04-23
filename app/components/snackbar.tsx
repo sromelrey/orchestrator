@@ -13,7 +13,6 @@ export default function CustomizedSnackbars({
   type: string;
 }) {
   const [open, setOpen] = React.useState(true);
-  console.log(message, open);
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
