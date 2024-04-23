@@ -7,6 +7,8 @@ import Tabs from "./tabs";
 import Textarea from "./text-area";
 import BreadCrumbs from "./breadcrumbs";
 import SnackBar from "./snackbar";
+import MUIPopover from "./popover";
+import TreeView from "./tree-view";
 
 export {
   BreadCrumbs,
@@ -20,4 +22,6 @@ export {
   Textarea,
   TextBox,
   TimePicker,
+  TreeView,
+  MUIPopover as PopOver,
 };

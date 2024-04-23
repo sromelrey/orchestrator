@@ -1,6 +1,6 @@
 import { Button, TableRowSkeleton } from "@/app/components";
 import Search from "@/app/components/search";
-import { Todos, fetchedTasks } from "@/app/lib/actions/(dashboard)/todo/data";
+import { Task, fetchedTasks } from "@/app/lib/actions/(dashboard)/todo/data";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import TableBody from "../todo-table-body";
 import Link from "next/link";
@@ -17,7 +17,7 @@ export default async function TableWrapper({
 }) {
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
-  const items: Todos[] = await fetchedTasks(query);
+  const items: Task[] = await fetchedTasks(query);
   return (
     <main className='w-full'>
       <div className='relative mx-auto flex w-full flex-col space-y-2.5 p-4 md:-mt-3  bg-violet-400 bg-opacity-20 border-violet-100 rounded-lg shadow-violet-200'>

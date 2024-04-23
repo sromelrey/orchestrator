@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import { formatDateToLocal, transformTasks } from "@/app/lib/helpers";
-import { Todos } from "@/app/lib/actions/(dashboard)/todo/data";
+import { Task } from "@/app/lib/actions/(dashboard)/todo/data";
 
-export default function TableBody({ items }: { items: Todos[] }) {
+export default function TableBody({ items }: { items: Task[] }) {
   return (
     <tbody className='bg-white'>
       {items.length > 0 ? (

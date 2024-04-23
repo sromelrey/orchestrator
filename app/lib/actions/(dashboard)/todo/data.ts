@@ -15,19 +15,26 @@ export type SubtasksList = {
 };
 
 export type Subtasks = {
+  description: string;
   id: string;
   user_id?: string;
   title: string;
   subtasks_list?: Array<SubtasksList>;
-  date: string;
+  start_time: string;
+  end_time: string;
 };
 export type Task = {
+  subtaskTree?: {
+    id: string;
+    label: string;
+    children: { id: string; label: string }[] | undefined;
+  }[];
   id: string;
   user_id: string;
   title: string;
   description: string;
   status: "pending" | "inprogress" | "done";
-  subtasks?: Array<Subtasks>;
+  subtasks?: Array<Subtasks> | any;
   no_of_subtasks?: number;
   date: string;
 };
@@ -58,29 +65,47 @@ export async function fetchedTaskById(id: string) {
       })
     );
     const enrichedSubtasksList = subTasksList.flatMap(
-      (subtaskList) => subtaskList.rows
+      (subtasks_list) => subtasks_list.rows
     );
 
     if (subTasks.length > 0) {
-      const enrichedSubtasks = subTasks.map((subtask) => {
-        const subtaskList = enrichedSubtasksList?.map((list) => {
-          if (list.subtask_id === subtask.id) {
-            return list;
-          }
-        });
-        const filteredSubtasks =
-          subtaskList?.filter((data) => data !== undefined) || [];
+      const enrichedSubtasks =
+        subTasks.map((subtask) => {
+          const subtasks_list = enrichedSubtasksList?.map((list) => {
+            if (list.subtask_id === subtask.id) {
+              return list;
+            }
+          });
+          const filteredSubtasksList =
+            subtasks_list?.filter((data) => data !== undefined) || [];
 
-        return {
-          ...subtask,
-          subtaskList: filteredSubtasks,
-        };
-      });
-      taskData.subtasks = enrichedSubtasks;
+          return {
+            ...subtask,
+            subtasks_list: filteredSubtasksList,
+          };
+        }) || [];
+      taskData.subtasks = enrichedSubtasks || [];
     }
-    console.log(taskData.subtasks.map((data) => data));
+    const subtaskTree = taskData.subtasks.map(
+      (subtask: { id: any; title: any; subtasks_list: any[] }) => {
+        return {
+          id: subtask.id,
+          label: subtask.title,
+          children: subtask.subtasks_list?.map(
+            (list: { id: any; name: any }) => {
+              return {
+                id: list.id,
+                label: list.name,
+              };
+            }
+          ),
+        };
+      }
+    );
+    // console.log(subtaskTree);
+    taskData.subtaskTree = subtaskTree;
 
-    return tasksResponse.rows[0];
+    return taskData;
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch tasks.");
