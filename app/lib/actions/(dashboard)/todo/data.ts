@@ -90,6 +90,7 @@ export async function fetchedTaskById(id: string) {
       (subtask: { id: any; title: any; subtasks_list: any[] }) => {
         return {
           id: subtask.id,
+          isParent: true,
           label: subtask.title,
           children: subtask.subtasks_list?.map(
             (list: { id: any; name: any }) => {

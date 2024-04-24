@@ -8,12 +8,13 @@ import Textarea from "./text-area";
 import BreadCrumbs from "./breadcrumbs";
 import SnackBar from "./snackbar";
 import MUIPopover from "./popover";
-import TreeView from "./tree-view";
+import CustomTreeView from "./custom-tree";
 
 export {
   BreadCrumbs,
   Button,
   CardSkeleton,
+  CustomTreeView,
   DatePicker,
   SnackBar,
   SubmitButton,
@@ -22,6 +23,5 @@ export {
   Textarea,
   TextBox,
   TimePicker,
-  TreeView,
   MUIPopover as PopOver,
 };
