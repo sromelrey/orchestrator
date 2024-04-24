@@ -1,5 +1,5 @@
 "use client";
-import { PopOver, TreeView } from "@/app/components";
+import { CustomTreeView, PopOver } from "@/app/components";
 import { Subtasks } from "@/app/lib/actions/(dashboard)/todo/data";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import React from "react";
@@ -46,7 +46,7 @@ export default function SubtasksDetails({
         {/* //   </div> */}
         {/* <div key={index}> */}
         {/* <TreeView /> */}
-        <TreeView items={subtaskTree} />
+        <CustomTreeView items={subtaskTree} />
         {/* </div> */}
         {/* </div>
         ))} */}
