@@ -92,6 +92,10 @@ export async function fetchedTaskById(id: string) {
           id: subtask.id,
           isParent: true,
           label: subtask.title,
+          doneTasks:
+            subtask.subtasks_list.reduce((acc, task) => {
+              if (task.status === "done") acc++;
+            }, 0) || 0,
           children: subtask.subtasks_list?.map(
             (list: { id: any; name: any }) => {
               return {
@@ -105,7 +109,6 @@ export async function fetchedTaskById(id: string) {
     );
     // console.log(subtaskTree);
     taskData.subtaskTree = subtaskTree;
-
     return taskData;
   } catch (error) {
     console.error("Database Error:", error);

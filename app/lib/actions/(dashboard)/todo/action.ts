@@ -5,6 +5,7 @@ import { getSession } from "@/app/lib/utils";
 import { SubtaskSchema, TaskSchema } from "./schemas";
 import { SubtaskState, TaskState } from "./definitions";
 import { fetchSelectedTime } from "./data";
+import { revalidatePath } from "next/cache";
 
 export async function createTask(prevState: TaskState, formData: FormData) {
   const session = await getSession();
@@ -114,3 +115,24 @@ export async function createSubtasks(prevState: SubtaskState, formData: any) {
     };
   }
 }
+
+export async function updateSubtaskList(
+  taskId: string,
+  id: string,
+  status: string
+) {
+  try {
+    await sql`
+    UPDATE subtasks_list 
+    SET status=${status}
+    WHERE id=${id}
+  `;
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "Database Error: Failed to Update subtasks_list.",
+    };
+  }
+  revalidatePath(`/todo/tasks/${taskId}`);
+}
+
